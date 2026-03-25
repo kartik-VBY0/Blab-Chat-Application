@@ -1,6 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Sora:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
- @plugin "daisyui" {
-   themes: light --default, dark --prefersdark,"cupcake",
+
+@plugin "daisyui" {
+   themes: light --default,
+      dark --prefersdark,
+      "cupcake",
       bumblebee,
       emerald,
       corporate,
@@ -30,4 +34,152 @@
       dim,
       nord,
       sunset;
+}
+
+@layer base {
+   :root {
+      --glass-border: color-mix(in srgb, hsl(var(--b1)) 45%, white 55%);
+      --glass-bg: color-mix(in srgb, hsl(var(--b1)) 75%, transparent 25%);
+      --aurora-a: color-mix(in srgb, hsl(var(--p)) 65%, #ffffff 35%);
+      --aurora-b: color-mix(in srgb, hsl(var(--s)) 75%, #ffffff 25%);
+      --aurora-c: color-mix(in srgb, hsl(var(--a)) 70%, #ffffff 30%);
    }
+
+   html,
+   body,
+   #root {
+      min-height: 100%;
+   }
+
+   body {
+      font-family: "Outfit", "Segoe UI", sans-serif;
+   }
+
+   h1,
+   h2,
+   h3,
+   h4,
+   .display-font {
+      font-family: "Sora", "Segoe UI", sans-serif;
+      letter-spacing: -0.02em;
+   }
+}
+
+@layer components {
+   .modern-bg {
+      position: relative;
+      background:
+         radial-gradient(circle at 12% 10%, color-mix(in srgb, var(--aurora-a) 26%, transparent) 0%, transparent 36%),
+         radial-gradient(circle at 88% 15%, color-mix(in srgb, var(--aurora-b) 22%, transparent) 0%, transparent 34%),
+         radial-gradient(circle at 50% 100%, color-mix(in srgb, var(--aurora-c) 28%, transparent) 0%, transparent 42%),
+         linear-gradient(140deg, color-mix(in srgb, hsl(var(--b2)) 88%, white 12%), color-mix(in srgb, hsl(var(--b1)) 92%, white 8%));
+   }
+
+   .aurora-grid::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: linear-gradient(color-mix(in srgb, hsl(var(--bc)) 10%, transparent) 1px, transparent 1px),
+         linear-gradient(90deg, color-mix(in srgb, hsl(var(--bc)) 10%, transparent) 1px, transparent 1px);
+      background-size: 42px 42px;
+      opacity: 0.3;
+      mask-image: radial-gradient(circle at center, black, transparent 76%);
+   }
+
+   .float-orb {
+      position: absolute;
+      border-radius: 9999px;
+      filter: blur(40px);
+      opacity: 0.45;
+      animation: drift 9s ease-in-out infinite;
+   }
+
+   .glass-panel {
+      background: color-mix(in srgb, var(--glass-bg) 92%, transparent);
+      border: 1px solid color-mix(in srgb, var(--glass-border) 40%, transparent);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow:
+         0 16px 42px color-mix(in srgb, black 16%, transparent),
+         inset 0 1px 0 color-mix(in srgb, white 60%, transparent);
+   }
+
+   .glass-nav {
+      background: color-mix(in srgb, hsl(var(--b1)) 70%, transparent 30%);
+      border-bottom: 1px solid color-mix(in srgb, hsl(var(--bc)) 10%, transparent);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+   }
+
+   .hover-lift {
+      transition: transform 280ms cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 280ms ease,
+         background-color 220ms ease;
+      transform-style: preserve-3d;
+   }
+
+   .hover-lift:hover {
+      transform: translateY(-3px) rotateX(4deg) rotateY(-4deg);
+      box-shadow: 0 14px 30px color-mix(in srgb, black 20%, transparent);
+   }
+
+   .modern-input {
+      border-color: color-mix(in srgb, hsl(var(--bc)) 20%, transparent);
+      background: color-mix(in srgb, hsl(var(--b1)) 84%, transparent);
+      transition: border-color 220ms ease, box-shadow 220ms ease, transform 180ms ease;
+   }
+
+   .modern-input:focus,
+   .modern-input:focus-within {
+      border-color: hsl(var(--p));
+      box-shadow: 0 0 0 4px color-mix(in srgb, hsl(var(--p)) 22%, transparent);
+      transform: translateY(-1px);
+   }
+
+   .modern-cta {
+      border: 0;
+      background-image: linear-gradient(120deg, hsl(var(--p)), color-mix(in srgb, hsl(var(--s)) 75%, hsl(var(--p))));
+      box-shadow: 0 14px 28px color-mix(in srgb, hsl(var(--p)) 38%, transparent);
+      transition: transform 220ms ease, box-shadow 220ms ease, filter 220ms ease;
+   }
+
+   .modern-cta:hover {
+      transform: translateY(-2px);
+      filter: saturate(1.15);
+      box-shadow: 0 18px 34px color-mix(in srgb, hsl(var(--p)) 44%, transparent);
+   }
+
+   .page-enter {
+      animation: pageReveal 560ms cubic-bezier(0.2, 0.7, 0.2, 1);
+   }
+
+   .tilt-card {
+      transform-style: preserve-3d;
+      transition: transform 340ms cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 340ms ease;
+   }
+
+   .tilt-card:hover {
+      transform: perspective(1000px) rotateX(4deg) rotateY(-5deg) translateY(-4px);
+   }
+}
+
+@keyframes drift {
+   0%,
+   100% {
+      transform: translate3d(0, 0, 0) scale(1);
+   }
+   50% {
+      transform: translate3d(16px, -10px, 0) scale(1.05);
+   }
+}
+
+@keyframes pageReveal {
+   from {
+      opacity: 0;
+      transform: translateY(20px) scale(0.99);
+   }
+   to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+   }
+}

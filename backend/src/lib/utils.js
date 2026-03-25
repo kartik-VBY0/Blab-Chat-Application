@@ -2,14 +2,16 @@
 import jwt from "jsonwebtoken";
 
 export const generateToken=(userId,res)=>{
+    const isProduction = process.env.NODE_ENV === "production";
     const token=jwt.sign({userId},process.env.JWT_SECRET,{
         expiresIn:"7d"
     })
     res.cookie("jwt",token,{
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         httpOnly: true,
-        secure: process.env.NODE_ENV !== "development", // Use secure cookies in production
-        sameSite: "strict" // Helps prevent CSRF attacks
+        secure: isProduction,
+        // "none" is required when frontend and backend are on different domains in production.
+        sameSite: isProduction ? "none" : "lax"
     });
     return token;
 }
